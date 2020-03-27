@@ -1,34 +1,42 @@
-import React from "react";
-import s from "./Dialogs.module.css";
-import Message from "./Message/Message";
+import React from 'react';
+import s from './Dialogs.module.css';
 import DialogItem from "./DialogItem/DialogItem";
+import Message from "./Message/Message";
+import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
 
+const Dialogs = (props) => {
 
+    let state = props.dialogsPage;
 
+    let dialogsElements = state.dialogs.map( d => <DialogItem name={d.name} id={d.id} />  );
+    let messagesElements = state.messages.map( m => <Message message={m.message} /> );
+    let newMessageBody = state.newMessageBody;
 
-const Dialogs = props => {
+    let onSendMessageClick = () => {
+        props.sendMessage();
+    }
 
-  let messagesElements = props.state.messages.map(m => <Message message={m.message} id={m.id} />)
-  let dialogElements = props.state.dialogs.map(dialog => <DialogItem name={dialog.name} id={dialog.id} />)
+    let onNewMessageChange = (e) => {
+        let body = e.target.value;
+        props.updateNewMessageBody(body);
+    }
 
-  let newMessage = React.createRef();
-  let sendMessage = () => {
-    let text = newMessage.current.value
-    alert(text)
-  }
-
-  return (
-    <div className={s.dialogs}>
-      <div className={s.dialogItems}>
-        {dialogElements}
-      </div>
-      <div className={s.messages}>
-        {messagesElements}
-      </div>
-      <textarea ref={newMessage}> </textarea>
-      <button onClick={sendMessage}>Send message</button>
-    </div>
-  );
-};
+    return (
+        <div className={s.dialogs}>
+            <div className={s.dialogsItems}>
+                { dialogsElements }
+            </div>
+            <div className={s.messages}>
+                <div>{ messagesElements }</div>
+                <div>
+                    <div><textarea value={newMessageBody}
+                                   onChange={onNewMessageChange}
+                                   placeholder='Enter your message'></textarea></div>
+                    <div><button onClick={onSendMessageClick}>Send</button></div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 export default Dialogs;
