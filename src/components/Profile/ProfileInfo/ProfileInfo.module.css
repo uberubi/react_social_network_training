@@ -3,6 +3,11 @@ img {
   width: 840px;
 }
 
+.userAvatar {
+  height: 350px;
+  width: 350px;
+}
+
 .descriptionBlock {
   padding: 10px;
 }
