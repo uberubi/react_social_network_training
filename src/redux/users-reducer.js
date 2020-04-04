@@ -99,9 +99,7 @@ export const follow = (userId) => {
   };
 };
 
-export const unfollow = (userId) => {
-
-  return (dispatch) => {
+export const unfollow = (userId) => (dispatch) => {
     dispatch(toggleFollowingProgress(true, userId))
     usersAPI.unfollow(userId).then((data) => {
       if (data.resultCode === 0) {
@@ -110,6 +108,6 @@ export const unfollow = (userId) => {
       dispatch(toggleFollowingProgress(false, userId))
     });
   };
-};
+
 
 export default usersReducer;
