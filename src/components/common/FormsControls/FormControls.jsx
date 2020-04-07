@@ -16,7 +16,7 @@ const Textarea = (props) => {
   const { input, meta, child, ...restProps } = props;
   return (
     <FormControl {...props}>
-      <input {...input} {...restProps} />
+      <textarea {...input} {...restProps} />
     </FormControl>
   );
 };
