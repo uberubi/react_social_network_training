@@ -13,9 +13,12 @@ import { compose } from "redux";
 import Preloader from "./components/common/Preloader/Preloader";
 
 class App extends React.Component {
+  componentDidMount() {
+    this.props.initializeApp()
+  }
 
   render() {
-    if (this.props.initialized) {
+    if (!this.props.initialized) {
       return <Preloader />
     }
     return (
