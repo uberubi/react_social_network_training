@@ -1,10 +1,9 @@
 import React from "react";
-import s from "./MyPosts.module.css";
+import styles from "./MyPosts.module.css";
 import Post from "./Post/Post";
 import { reduxForm, Field } from "redux-form";
 import { required, maxLengthCreator } from "../../../utils/validators/validators";
 import Textarea from "../../common/FormsControls/FormControls"
-
 
 const maxLength10 = maxLengthCreator(10)
 
@@ -18,10 +17,10 @@ const MyPosts = (props) => {
   };
 
   return (
-    <div className={s.postsBlock}>
+    <div className={styles.postsBlock}>
       <h3>My posts</h3>
       <AddNewPostFormRedux onSubmit={onAddPost}/>
-      <div className={s.posts}>{postsElements}</div>
+      <div className={styles.posts}>{postsElements}</div>
     </div>
   );
 };
