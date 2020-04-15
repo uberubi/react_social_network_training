@@ -18,7 +18,6 @@ test('length of posts should be incremented', () => {
   let newState = profileReducer(state, action)
   // 3. expectations
   expect(newState.posts.length).toBe(5);
-  expect(newState.posts[4].message).toBe("put your message");
 });
 
 test('message of new post should be correct', () => {
@@ -27,7 +26,6 @@ test('message of new post should be correct', () => {
   // 2. action
   let newState = profileReducer(state, action)
   // 3. expectations
-  expect(newState.posts.length).toBe(5);
   expect(newState.posts[4].message).toBe("put your message");
 });
 
@@ -39,4 +37,3 @@ test('after delete length of messages shoud be decrement', () => {
   // 3. expectations
   expect(newState.posts.length).toBe(3);
 });
-
