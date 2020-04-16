@@ -1,7 +1,7 @@
-import React, { Suspense, Spinner } from "react";
+import React from "react";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
-import { Route, withRouter, BrowserRouter } from "react-router-dom";
+import { Route, withRouter, BrowserRouter, HashRouter } from "react-router-dom";
 import LoginPage from "./components/Login/Login";
 import { connect, Provider } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
@@ -52,11 +52,11 @@ let AppContainer = compose(withRouter, connect(mapStateToProps, { initializeApp 
 
 const MainApp = (props) => {
   return (
-    <BrowserRouter>
+    <HashRouter basename={process.env.PUBLIC_URL}>
       <Provider store={store}>
         <AppContainer />
       </Provider>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
