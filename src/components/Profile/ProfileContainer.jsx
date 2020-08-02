@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 
 class ProfileContainer extends React.Component {
-  
+
   refreshProfile() {
     let userId = this.props.match.params.userId;
     if (!userId) {
@@ -24,7 +24,7 @@ class ProfileContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.match.params.userId != prevProps.match.params.userId)
+    if (this.props.match.params.userId !== prevProps.match.params.userId)
     {
       this.refreshProfile()
     }

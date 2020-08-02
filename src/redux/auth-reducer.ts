@@ -5,12 +5,14 @@ const SET_USER_DATA = "network/auth/SET_USER_DATA";
 const GET_CAPTCHA_URL_SUCCESS = "network/auth/GET_CAPTCHA_URL_SUCCESS";
 
 let initialState = {
-  userId: null,
-  email: null,
-  login: null,
+  userId: null as string | null,
+  email: null as string | null,
+  login: null as string | null,
   isAuth: false,
-  captchaUrl: null, // if null captcha isn't required
+  captchaUrl: null as string| null, // if null captcha isn't required
 };
+
+export type initialStateType = typeof initialState
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
