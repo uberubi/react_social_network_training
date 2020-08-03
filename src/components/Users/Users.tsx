@@ -1,14 +1,33 @@
-import React from "react";
+import React, {FC} from "react";
 import Paginator from "../common/Paginator/Paginator";
 import User from "./User";
+import { UsersType } from "../../types/types";
 
-const Users = ({ currentPage, onPageChanged, totalUsersCount, pageSize, users, ...props }) => {
+type Props = {
+  currentPage: number
+  onPageChanged: (page: number) => void
+  totalUsersCount: number
+  pageSize: number
+  users: Array<UsersType>
+  followingInProgress: Array<number>
+  unfollow: (userId: number) => void
+  follow: (userId: number) => void
+}
+
+const Users: FC<Props> = ({
+  currentPage,
+  onPageChanged,
+  totalUsersCount,
+  pageSize,
+  users,
+  ...props
+}) => {
   return (
     <div>
       <Paginator
         currentPage={currentPage}
         onPageChanged={onPageChanged}
-        totalUsersCount={totalUsersCount}
+        totalItemsCount={totalUsersCount}
         pageSize={pageSize}
       />
       <div>

@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
-import { Route, withRouter, BrowserRouter, HashRouter, Switch, Redirect } from "react-router-dom";
+import { Route, withRouter, HashRouter, Switch, Redirect } from "react-router-dom";
 import LoginPage from "./components/Login/Login";
 import { connect, Provider } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
@@ -41,7 +41,7 @@ class App extends React.Component {
                    render={() => <Redirect to={"/profile"} />} />
             <Route path="/dialogs" render={withSuspense(DialogsContainer)} />
             <Route path="/profile/:userId?/" render={withSuspense(ProfileContainer)} />
-            <Route path="/users" render={() => <UsersContainer />} />
+            <Route path="/users" render={() => <UsersContainer pageTitle="yo page title"/>} />
             <Route path="/login" render={() => <LoginPage />} />
           </Switch>
         </div>
