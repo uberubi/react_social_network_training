@@ -1,7 +1,13 @@
 import React from "react";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
-import { Route, withRouter, HashRouter, Switch, Redirect } from "react-router-dom";
+import {
+  Route,
+  withRouter,
+  HashRouter,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import LoginPage from "./components/Login/Login";
 import { connect, Provider } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
@@ -11,20 +17,29 @@ import store from "./redux/redux-store";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import { withSuspense } from "./hoc/withSuspense";
-const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
-const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
+const DialogsContainer = React.lazy(() =>
+  import("./components/Dialogs/DialogsContainer")
+);
+const ProfileContainer = React.lazy(() =>
+  import("./components/Profile/ProfileContainer")
+);
 
 class App extends React.Component {
-  catchErrors = (reason, promise) => {
-    alert("Some error occured")
-
-  } 
+  catchAllUnhandledErrors = (reason, promise) => {
+    alert("Some error occured");
+  };
   componentDidMount() {
     this.props.initializeApp();
-    window.addEventListener("unhandledrejection", this.catchErrors())
+    window.addEventListener(
+      "unhandledrejection",
+      this.catchAllUnhandledErrors()
+    );
   }
   componentWillUnmount() {
-    window.removeEventListener("unhandledrejection", this.catchErrors())
+    window.removeEventListener(
+      "unhandledrejection",
+      this.catchAllUnhandledErrors()
+    );
   }
 
   render() {
@@ -37,12 +52,18 @@ class App extends React.Component {
         <Navbar />
         <div className="app-wrapper-content">
           <Switch>
-            <Route exact path='/'
-                   render={() => <Redirect to={"/profile"} />} />
+            <Route exact path="/" render={() => <Redirect to={"/profile"} />} />
             <Route path="/dialogs" render={withSuspense(DialogsContainer)} />
-            <Route path="/profile/:userId?/" render={withSuspense(ProfileContainer)} />
-            <Route path="/users" render={() => <UsersContainer pageTitle="yo page title"/>} />
+            <Route
+              path="/profile/:userId?/"
+              render={withSuspense(ProfileContainer)}
+            />
+            <Route
+              path="/users"
+              render={() => <UsersContainer pageTitle="yo page title" />}
+            />
             <Route path="/login" render={() => <LoginPage />} />
+            <Route path="*" render={() => <div>404 NOT FOUND</div>} />
           </Switch>
         </div>
       </div>
@@ -52,7 +73,10 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({ initialized: state.app.initialized });
 
-let AppContainer = compose(withRouter, connect(mapStateToProps, { initializeApp }))(App);
+let AppContainer = compose(
+  withRouter,
+  connect(mapStateToProps, { initializeApp })
+)(App);
 
 const MainApp = (props) => {
   return (
