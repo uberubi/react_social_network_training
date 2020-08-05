@@ -1,4 +1,4 @@
-import { usersAPI, profileAPI } from "../api/api";
+import { profileAPI } from "../api/api";
 import { stopSubmit, FormAction } from "redux-form";
 import { AppStateType } from "./redux-store";
 import { Dispatch } from "redux";
@@ -171,7 +171,7 @@ type DispatchType = Dispatch<ActionsTypes>
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getUserProfile = (userId: number | null): ThunkType => async (dispatch, getState: GetStateType) => {
-  let response = await usersAPI.getProfile(userId);
+  let response = await profileAPI.getProfile(userId);
   dispatch(setUserProfile(response.data));
 };
 

@@ -1,4 +1,5 @@
-import { authAPI, securityAPI } from "../api/api";
+import { ResultCodeForCaptchaEnum } from './../api/api';
+import { authAPI, securityAPI, ResultCodesEnum } from "../api/api";
 import { stopSubmit, FormAction } from "redux-form";
 import { AppStateType } from "./redux-store";
 import { Dispatch } from "redux";
@@ -29,7 +30,6 @@ const authReducer = (state = initialState, action: any): InitialStateType => {
       return state;
   }
 };
-
 
 type ActionsTypes = 
   | SetAuthUserDataActionType
@@ -64,31 +64,28 @@ export const getCaptchaUrlSuccess = (captchaUrl: string): GetCaptchaUrlSuccessTy
   payload: { captchaUrl },
 });
 
-
 type GetStateType = () => AppStateType
 type DispatchType = Dispatch<ActionsTypes>
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getAuthUserData = (): ThunkType => async (dispatch) => {
   let response = await authAPI.me();
-  if (response.data.resultCode === 0) {
-    let { id, login, email } = response.data.data;
+  if (response.resultCode === ResultCodesEnum.Success) {
+    let { id, login, email } = response.data;
     dispatch(setAuthUserData(id, email, login, true));
   }
 };
 
-
-
 export const login = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => async (dispatch) => {
-  let response = await authAPI.login(email, password, rememberMe, captcha);
-  if (response.data.resultCode === 0) {
+  let data = await authAPI.login(email, password, rememberMe, captcha);
+  if (data.resultCode === ResultCodesEnum.Success) {
     // success, get  auth data
     dispatch(getAuthUserData());
   } else {
-    if (response.data.resultCode === 10) {
-      dispatch(securityAPI.getCaptchaUrl())
+    if (data.resultCode === ResultCodeForCaptchaEnum.CaptchaIsRequired) {
+      dispatch(getCaptchaUrl())
     }
-    let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
+    let message = data.messages.length > 0 ? data.messages[0] : "Some error";
     dispatch(stopSubmit("login", { _error: message }));
   }
 };
