@@ -48,24 +48,28 @@ export const Input: React.FC<WrappedFieldProps> = (props) => {
   );
 };
 
-export const createField = (
+
+
+export function createField<FormKeysType extends string>(
   placeholder: string | undefined,
-  name: string,
+  name: FormKeysType,
   validators: Array<FieldValidatorType>,
   component: React.FC<WrappedFieldProps>,
   props = {},
   text = ""
-) => (
-  <div>
-    <Field
-      placeholder={placeholder}
-      name={name}
-      validate={validators}
-      component={component}
-      {...props}
-    />
-    {text}
-  </div>
-);
+) {
+  return (
+    <div>
+      <Field
+        placeholder={placeholder}
+        name={name}
+        validate={validators}
+        component={component}
+        {...props}
+      />
+      {text}
+    </div>
+  );
+}
 
 export default Textarea;

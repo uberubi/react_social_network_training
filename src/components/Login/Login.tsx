@@ -15,12 +15,12 @@ type LoginFormOwnProps = {
 const LoginForm: FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnProps> & LoginFormOwnProps> = ({handleSubmit, error, captchaUrl}) => {
   return (
     <form onSubmit={handleSubmit}>
-        {createField("Email", "email", [required], Input)}
-        {createField("Password", "password", [required], Input,{type: 'password'} )}
-        {createField(undefined, "rememberMe", [], Input,{type: 'checkbox'},'remember me')}
+        {createField<LoginFormValuesTypeKeys>("Email", "email", [required], Input)}
+        {createField<LoginFormValuesTypeKeys>("Password", "password", [required], Input,{type: 'password'} )}
+        {createField<LoginFormValuesTypeKeys>(undefined, "rememberMe", [], Input,{type: 'checkbox'},'remember me')}
 
         {captchaUrl && <img src={captchaUrl} alt="captcha"/>}
-        {captchaUrl && createField("Symbols from image", "captcha", [required], Input, {})}
+        {captchaUrl && createField<LoginFormValuesTypeKeys>("Symbols from image", "captcha", [required], Input, {})}
 
       {error && <div className={style.formSummaryError}>{error}</div>}
       <div>
@@ -44,12 +44,17 @@ type MapStatePropsType = {
   isAuth: boolean
 }
 
-type LoginFormValuesType = {
-  email: string
-  password: string
-  rememberMe: boolean
-  captcha: string
-}
+
+export type LoginFormValuesType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captcha: string;
+};
+
+type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string>
+
+
 
 const Login: FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
   const onSubmit = (formData: any) => {
