@@ -1,4 +1,4 @@
-import { profileAPI } from "../api/api";
+import { profileAPI } from "../api/profile-api";
 import { stopSubmit, FormAction } from "redux-form";
 import { AppStateType } from "./redux-store";
 import { Dispatch } from "redux";
@@ -171,17 +171,17 @@ type DispatchType = Dispatch<ActionsTypes>
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getUserProfile = (userId: number | null): ThunkType => async (dispatch, getState: GetStateType) => {
-  let response = await profileAPI.getProfile(userId);
-  dispatch(setUserProfile(response.data));
+  let data = await profileAPI.getProfile(userId);
+  dispatch(setUserProfile(data));
 };
 
 export const getStatus = (userId: number): ThunkType => async (dispatch) => {
-  let response = await profileAPI.getStatus(userId);
-  dispatch(setStatus(response.data));
+  let data = await profileAPI.getStatus(userId);
+  dispatch(setStatus(data));
 };
 export const updateStatus = (status: string): ThunkType => async (dispatch) => {
-  let response = await profileAPI.updateStatus(status);
-  if (response.data.resultCode === 0) {
+  let data = await profileAPI.updateStatus(status);
+  if (data.resultCode === 0) {
     dispatch(setStatus(status));
   }
 };
@@ -191,20 +191,20 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (
   getState: GetStateType
 ) => {
   const userId = getState().auth.userId;
-  const response = await profileAPI.saveProfile(profile);
+  const data = await profileAPI.saveProfile(profile);
 
-  if (response.data.resultCode === 0) {
+  if (data.resultCode === 0) {
     dispatch(getUserProfile(userId));
   } else {
-    dispatch(stopSubmit("edit-profile", { _error: response.data.messages[0] }));
-    return Promise.reject(response.data.messages[0]);
+    dispatch(stopSubmit("edit-profile", { _error: data.messages[0] }));
+    return Promise.reject(data.messages[0]);
   }
 };
 
 export const savePhoto = (file: any) => async (dispatch: any) => {
-  let response = await profileAPI.savePhoto(file);
-  if (response.data.resultCode === 0) {
-    dispatch(savePhotoSuccess(response.data.data.photos));
+  let data = await profileAPI.savePhoto(file);
+  if (data.resultCode === 0) {
+    dispatch(savePhotoSuccess(data.data.photos));
   }
 };
 

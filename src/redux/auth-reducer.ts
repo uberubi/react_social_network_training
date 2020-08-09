@@ -1,5 +1,6 @@
-import { ResultCodeForCaptchaEnum } from './../api/api';
-import { authAPI, securityAPI, ResultCodesEnum } from "../api/api";
+import { ResultCodeForCaptcha, ResultCodes } from './../api/api';
+import { authAPI } from "../api/auth-api";
+import { securityAPI  } from "../api/security-api";
 import { stopSubmit, FormAction } from "redux-form";
 import { AppStateType } from "./redux-store";
 import { Dispatch } from "redux";
@@ -70,7 +71,7 @@ type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getAuthUserData = (): ThunkType => async (dispatch) => {
   let response = await authAPI.me();
-  if (response.resultCode === ResultCodesEnum.Success) {
+  if (response.resultCode === ResultCodes.Success) {
     let { id, login, email } = response.data;
     dispatch(setAuthUserData(id, email, login, true));
   }
@@ -78,11 +79,11 @@ export const getAuthUserData = (): ThunkType => async (dispatch) => {
 
 export const login = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => async (dispatch) => {
   let data = await authAPI.login(email, password, rememberMe, captcha);
-  if (data.resultCode === ResultCodesEnum.Success) {
+  if (data.resultCode === ResultCodes.Success) {
     // success, get  auth data
     dispatch(getAuthUserData());
   } else {
-    if (data.resultCode === ResultCodeForCaptchaEnum.CaptchaIsRequired) {
+    if (data.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
       dispatch(getCaptchaUrl())
     }
     let message = data.messages.length > 0 ? data.messages[0] : "Some error";
@@ -91,8 +92,8 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
 };
 
 export const getCaptchaUrl = (): ThunkType => async (dispatch) => {
-  let response = await securityAPI.getCaptchaUrl();
-  const captchaUrl = response.data.url;
+  let data = await securityAPI.getCaptchaUrl();
+  const captchaUrl = data.url;
   dispatch(getCaptchaUrlSuccess(captchaUrl));
 };
 
